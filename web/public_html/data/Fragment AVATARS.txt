@@ -1,0 +1,11 @@
+Fragment AVATARS
+[[187,77,0,0]]
+
+background POKEMON
+[[187,75,0,0]]
+
+PILOT
+[[187,77,-4,-2]]
+
+MUSTANG
+[[187,77,-6,-2]]

@@ -1,0 +1,19 @@
+[ LOG    ]: 'lnferno' 0
+[ LOG    ]: Login: lnferno
+[ LOG    ]: 'lnferno' 0
+[ LOG    ]: Login: lnferno
+[ LOG    ]: 'Joji' 0
+[ LOG    ]: Login: Joji
+[ LOG    ]: 'Joji' 0
+[ LOG    ]: Login: Joji
+[ LOG    ]: user: 'Joji'
+[ LOG    ]: user: 'Joji'
+[ LOG    ]: user: 'lnferno'
+[ LOG    ]: user: 'lnferno'
+[ LOG    ]: 'Polanco' password error xdxdxd veilsiderx7
+[ LOG    ]: ====================
+[ LOG    ]: User: Polanco
+[ LOG    ]: Rank: 0
+[ LOG    ]: IP: ::1
+[ LOG    ]: ====================
+
