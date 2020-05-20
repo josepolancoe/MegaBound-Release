@@ -1004,7 +1004,7 @@ module.exports = class DataBase {
         var self = this;
         return new Promise(function (resolve, reject) {
             self.connection.getConnection().then(conn => {
-                conn.query('SELECT u.Id, u.IdAcc, u.country, u.game_id, u.rank, u.gp, u.gold, u.cash, u.gender, u.photo_url,u.bg_url, u.win, u.loss, gm.Id, gm.UserId, gm.Job, ac.Session, g.Id, g.Name as nameGuild FROM users u INNER JOIN accounts ac ON u.IdAcc = ac.Id LEFT JOIN guild_member gm ON gm.UserId = ac.Id LEFT JOIN guild g on gm.Id = g.Id WHERE  LOWER(`game_id`) = ?', [game_id])
+                conn.query('SELECT u.Id, u.IdAcc, u.country, u.game_id, u.rank, u.gp, u.gold, u.cash, u.gender, u.photo_url,u.bg_url, u.win, u.loss, u.MyDateRegister, gm.Id, gm.UserId, gm.Job, ac.Session, g.Id, g.Name as nameGuild FROM users u INNER JOIN accounts ac ON u.IdAcc = ac.Id LEFT JOIN guild_member gm ON gm.UserId = ac.Id LEFT JOIN guild g on gm.Id = g.Id WHERE  LOWER(`game_id`) = ?', [game_id])
                     .then(rows => {
                         conn.release();
                         if (rows[0].length > 0)

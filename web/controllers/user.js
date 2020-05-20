@@ -53,6 +53,7 @@ router.get('/:game_id', function (req, res) {
                         win: rows[0].win,
                         loss: rows[0].loss,
                         nameGuild: rows[0].nameGuild,
+						MyDateRegister: rows[0].MyDateRegister,
                         rate: rate,
                         login: login,
                         login_id: loguser,
