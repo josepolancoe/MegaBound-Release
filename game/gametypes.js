@@ -450,7 +450,9 @@ Types = {
     },
 
     GAME_ID: ["Dev", "DN", "zPaul", "Ash", "Dragonight","Polanco"],
-    MAPS_PLAY: [0, 1, 3, 4, 5, 6, 9, 10, 14],
+     MAPS_PLAY: [0, 1, 3, 4, 5, 6, 9, 10, 14],
+    //MAPS_PLAY: [4],
+    /*(0 => ice mountain, 1 =>floor lave, 3=> )*/
 
 };
 

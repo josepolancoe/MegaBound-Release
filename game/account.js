@@ -280,6 +280,17 @@ module.exports = class Account {
                                 self.gameserver.db.buyAvatarForAccount(self.user_id, is_cash, _iprecio, data)
                                     .then(function (data) {
                                         if (data.error_mysql || data.error_querry) {} else {
+                                            if(is_cash){
+                                                self.player.cash = self.player.cash - _iprecio;
+                                            }else{
+                                                self.player.gold = self.player.gold - _iprecio;
+                                            }
+                                            if (self.room) {
+                                                self.gameserver.pushToRoom(self.room.id, new Message.roomPlayers(self.room), null);
+                                            } else {
+                                                self.sendMessage(new Message.loginResponse(self));
+                                            }
+                                            //self.sendMessage(new Message.loginResponse(self));
                                             self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.PURCHASED, [id]));
                                             self.sendMessage(new Message.alertResponse("Aviso :(","Por favor salga y vuelva a entrar a la tienda para ver sus avatares nuevos \n \n \n - Disculpe las molestias, estamos trabajando-"));
                                         }
@@ -406,6 +417,7 @@ module.exports = class Account {
                             .then(function (data) {
                                 if (data.change) {
                                     self.player.game_id = _nname;
+                                    self.player.cash = self.player.cash -4000;
                                     self.sendMessage(new Message.loginResponse(self));
                                     self.gameserver.sendAccountsOnline();
                                 }
@@ -417,6 +429,7 @@ module.exports = class Account {
                                     self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.NAME_ALREADY_EXISTS, []));
                                 } else if (data.error_cash) {
                                     self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.NAME_NOT_ENOUGH_CASH, []));
+                                    self.sendMessage(new Message.alertResponse("Falló", "¡No tienes suficiente Cash para cambiar!"));
                                 }
                             });
                     } else {
@@ -464,6 +477,7 @@ module.exports = class Account {
                         }
                         self.gameserver.db.createGuild(gname, self)
                             .then(function (data) {
+                                self.player.gold = self.player.gold - 500000;
                                 self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.GUILD_CREATED, []));
                                 self.sendMessage(new Message.loginResponse(self));
                             })
@@ -507,7 +521,8 @@ module.exports = class Account {
                         self.gameserver.db.joinGuild(self, id)
                             .then(function (data) {
                                 if (data.good) {
-                                    self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.ALREADY_IN_GUILD, []));
+                                    //self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.ALREADY_IN_GUILD, []));
+                                    self.sendMessage(new Message.alertResponse("Listo", "¡Te has unido al Guild!"));
                                     if (self.room) {
                                         self.gameserver.pushToRoom(self.room.id, new Message.roomPlayers(self.room), null);
                                     }
@@ -526,6 +541,7 @@ module.exports = class Account {
                         self.connection.close();
                         return null;
                     }
+                    //USUARIO DE CLAN
                     if (self.player.guild !== '' && self.player.guild_job === 0) {
                         self.gameserver.db.leaveGuild(self)
                             .then(function (data) {
@@ -533,6 +549,7 @@ module.exports = class Account {
                                     self.player.guild = '';
                                     self.player.guild_job = 0;
                                     self.player.guild_id = 0;
+                                    self.sendMessage(new Message.alertResponse("Listo", "¡Ya no perteneces a este Guild!"));
                                     if (self.room) {
                                         self.gameserver.pushToRoom(self.room.id, new Message.roomPlayers(self.room), null);
                                     } else {
@@ -543,6 +560,42 @@ module.exports = class Account {
                             .catch(function (data) {
                                 if (data.error_mysql || data.error_querry) {}
                             });
+                    }
+                    //LIDER DEL CLAN
+                    if(self.player.guild !== '' && self.player.guild_job === 1){
+                        self.gameserver.db.deleteGuild(self.player.guild_id)
+                                .then(function(data){
+                                    self.player.guild = '';
+                                    self.player.guild_job = 0;
+                                    self.player.guild_id = 0;
+                                    self.sendMessage(new Message.alertResponse("Listo", "¡Ya no perteneces a este Guild!"));
+                                    if (self.room) {
+                                        self.gameserver.pushToRoom(self.room.id, new Message.roomPlayers(self.room), null);
+                                    } else {
+                                        self.sendMessage(new Message.loginResponse(self));
+                                    }
+                                })
+                                .catch(function (data) {
+                                    if (data.error_mysql || data.error_querry) {}
+                                });
+
+                        self.gameserver.db.deleteGuildMemberByIdGuild(self.player.guild_id, self.player.user_id)
+                            .then(function (data) {
+                            if (data.complete) {
+                                self.player.guild = '';
+                                self.player.guild_job = 0;
+                                self.player.guild_id = 0;
+                                self.sendMessage(new Message.alertResponse("Listo", "¡Ya no perteneces a este Guild!"));
+                                if (self.room) {
+                                    self.gameserver.pushToRoom(self.room.id, new Message.roomPlayers(self.room), null);
+                                } else {
+                                    self.sendMessage(new Message.loginResponse(self));
+                                }
+                            }
+                        })
+                        .catch(function (data) {
+                            if (data.error_mysql || data.error_querry) {}
+                        });
                     }
                     break;
                 }
@@ -657,8 +710,12 @@ module.exports = class Account {
                         if (room) {
                             if (room.player_count < room.max_players && room.status === Types.ROOM_STATUS.WAITING) {
                                 if (room.look === 1 && self.player.gm === 0) {
-                                    if (room.password !== password)
+                                    if (room.password !== password){
                                         self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.WRONG_PASSWORD, []));
+                                    }else{
+                                        room.joinPlayer(self);
+                                        self.location_type = Types.LOCATION.ROOM;
+                                    }
                                 } else {
                                     room.joinPlayer(self);
                                     self.location_type = Types.LOCATION.ROOM;
@@ -668,6 +725,7 @@ module.exports = class Account {
                             } else {
                                 self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.ROOM_FULL, []));
                             }
+                            Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);
                         } else {
                             self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.ROOM_DOES_NOT_EXIST, []));
                         }
@@ -681,11 +739,9 @@ module.exports = class Account {
                         self.connection.close();
                         return null;
                     }
-
                     /*if ((self.player.rank >= 27) === false) {
                         return null;
                     }*/
-
                     let id = self.gameserver.getIdforRoom();
                     let title = message[1];
                     let password = message[2];
@@ -699,11 +755,38 @@ module.exports = class Account {
                                 room.joinPlayer(self);
                                 self.location_type = Types.LOCATION.ROOM;
                                 self.gameserver.sendRooms();
+                                Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);
                             }
                         } else {
                             self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.ROOM_DOES_NOT_EXIST, []));
                         }
                     });
+                    break;
+                }
+            case Types.CLIENT_OPCODE.room_options:
+                {
+                    // seguridad
+                    if (!self.login_complete) {
+                        self.connection.close();
+                        return null;
+                    }
+                    let gamemode = message[2];
+                    if (gamemode=="1") {
+                        self.room.game_mode = Types.GAME_MODE.BOSS;
+                        self.room.joinOnlyPlayer(self);
+                        // self.location_type = Types.LOCATION.ROOM;
+                        self.gameserver.sendRooms();
+                    }else if(gamemode=="0"){
+                        self.room.game_mode = Types.GAME_MODE.NORMAL;
+                        self.room.joinOnlyPlayer(self);
+                        self.location_type = Types.LOCATION.ROOM;
+                        self.gameserver.sendRooms();
+                    }else if(gamemode=="2"){
+                        self.sendMessage(new Message.alertResponse("No disponible :(", "El modo SAME SAME aún no está disponible."));
+                    }else{
+                        self.sendMessage(new Message.alertResponse("No disponible :(", "El modo SCORE aún no está disponible."));
+                    }
+                        //Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);
                     break;
                 }
             case Types.CLIENT_OPCODE.room_title:
@@ -716,7 +799,10 @@ module.exports = class Account {
                     var _title1 = message[1];
                     if (self.room) {
                         self.room.RoomTitle(_title1);
-                    }
+                        self.room.joinOnlyPlayer(self);
+                        self.gameserver.sendRooms();
+                    } 
+                    //Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);
                     break;
                 }
             case Types.CLIENT_OPCODE.room_change_ready:
@@ -806,7 +892,7 @@ module.exports = class Account {
                                 user_id: id,
                                 reg_id: 0,
                                 game_id: 'Goku',
-                                rank: 0,
+                                rank: 31,
                                 gp: 0,
                                 gold: 0,
                                 cash: 0,
@@ -838,7 +924,7 @@ module.exports = class Account {
                                 user_id: id,
                                 reg_id: 0,
                                 game_id: 'Vegeta',
-                                rank: 1,
+                                rank: 30,
                                 gp: 0,
                                 gold: 0,
                                 cash: 0,
@@ -870,7 +956,7 @@ module.exports = class Account {
                                 user_id: id,
                                 reg_id: 0,
                                 game_id: 'Invisible',
-                                rank: 2,
+                                rank: 29,
                                 gp: 0,
                                 gold: 0,
                                 cash: 0,
@@ -902,7 +988,7 @@ module.exports = class Account {
                                 user_id: id,
                                 reg_id: 0,
                                 game_id: 'Ted',
-                                rank: 3,
+                                rank: 28,
                                 gp: 0,
                                 gold: 0,
                                 cash: 0,
@@ -942,10 +1028,21 @@ module.exports = class Account {
                     var _mob = message[1];
                     if (self.room) {
                         if (typeof (Types.MOBILES[_mob]) != 'undefined' && Types.MOBILES[_mob] !== null) {
-                            if (_mob == Types.MOBILE.RANDOM)
+                            if(self.player.gm === 1){
+                                if (_mob == Types.MOBILE.RANDOM)
                                 _mob = Types.MOBILE.DRAGON;
-                            self.player.mobile = _mob;
-                            self.gameserver.pushToRoom(self.room.id, new Message.changedMobile(self));
+                                self.player.mobile = _mob;
+                                self.gameserver.pushToRoom(self.room.id, new Message.changedMobile(self));
+                            }else{
+                                if (_mob == Types.MOBILE.RANDOM)
+                                _mob = Types.MOBILE.KNIGHT;
+                                self.player.mobile = _mob;
+                                self.gameserver.pushToRoom(self.room.id, new Message.changedMobile(self));
+                            }
+                            // if (_mob == Types.MOBILE.RANDOM)
+                            //     _mob = Types.MOBILE.DRAGON;
+                            // self.player.mobile = _mob;
+                            // self.gameserver.pushToRoom(self.room.id, new Message.changedMobile(self));
                         }
                     }
                     break;
@@ -963,7 +1060,9 @@ module.exports = class Account {
                     }*/
                     if (self.room) {
                         self.room.gameStart(self);
+                        self.gameserver.sendRooms();
                     }
+                    Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);
                     break;
                 }
 
@@ -1003,6 +1102,7 @@ module.exports = class Account {
                         self.player.ang = _ang;
                         self.player.move();
                         self.gameserver.pushToRoom(self.room.id, new Message.gameUpdate(self));
+                        //Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);
                     }
                     break;
                 }
@@ -1051,14 +1151,68 @@ module.exports = class Account {
                         self.player.look = look;
                         self.player.move();
                         self.room.game.gameShoot(x, y, body, look, ang, power, time, type, self);
+                        //Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);
                     }
                     break;
                 }
+
+            case Types.CLIENT_OPCODE.game_use_item:
+                {
+                    // seguridad
+                    if (!self.login_complete) {
+                        self.connection.close();
+                        return null;
+                    }
+                    let game_use_item = message[1];
+                    if (game_use_item=="0") {
+                        self.sendMessage(new Message.alertResponse("No disponible :(", "DUAL aún no está disponible."));
+                        //items dentro del juego (0 = dual ; 1 =teleport; 2 = dual++)
+                        let item_data = [Types.SERVER_OPCODE.items, [
+                            [-1, -1, 2, -1, 1, -1], -1
+                        ]];
+                        self.send(item_data);
+                    }else if(game_use_item=="2"){
+                        self.sendMessage(new Message.alertResponse("No disponible :(", "DUAL+ aún no está disponible."));
+                    }else{
+                        self.sendMessage(new Message.alertResponse("No disponible :(", "TELEPORT aún no está disponible."));
+                    }
+                    Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);
+                     break;
+                }
+
             case Types.CLIENT_OPCODE.addfriend:
                 {
+                    // seguridad
+                    if (!self.login_complete) {
+                        self.connection.close();
+                        return null;
+                    }
                     self.sendMessage(new Message.alertResponse("No disponible :(", "Estamos trabando en esto"));
                     break;
                 }
+
+                case Types.CLIENT_OPCODE.quick_join:
+                {
+                    // seguridad
+                    if (!self.login_complete) {
+                        self.connection.close();
+                        return null;
+                    }
+                    self.sendMessage(new Message.alertResponse("No disponible :(", "Estamos trabando en esto"));
+                    break;
+                }
+
+                case Types.CLIENT_OPCODE.delete_avatar:
+                {
+                    // seguridad
+                    if (!self.login_complete) {
+                        self.connection.close();
+                        return null;
+                    }
+                    self.sendMessage(new Message.alertResponse("No disponible :(", "Estamos trabando en esto"));
+                    break;
+                }
+            
             default:
                 {
                     Logger.info('Opcode: ' + Types.getMessageTypeAsString(opcode) + ' data: ' + message);

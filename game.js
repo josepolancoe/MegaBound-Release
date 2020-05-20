@@ -15,7 +15,7 @@ Logger.Init("game.txt");
 this.db = new DataBase();
 mapControll = new MapController(loadx);
 server = new ws(port);
-game = new GameServer(1, 500, server);
+game = new GameServer(1, 70, server);
 game.db = this.db;
 game.mapControl = mapControll;
 

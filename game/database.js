@@ -47,7 +47,7 @@ module.exports = class DataBase {
         var self = this;
         return new Promise(function (resolve, reject) {
             self.connection.getConnection().then(conn => {
-                conn.query('SELECT rank, game_id, country FROM users where IdAcc = ?', [id])
+                conn.query('SELECT rank, game_id, `unlock`,country FROM users where IdAcc = ?', [id])
                     .then(rows => {
                         conn.release();
                         if (rows[0].length > 0)
@@ -374,6 +374,39 @@ module.exports = class DataBase {
             });
         });
     }
+	//cambiar bg
+    updateGameBgUrlByIdAcc(bg_url, discount, user_id) {
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            self.connection.getConnection().then(conn => {
+                conn.query('UPDATE users SET bg_url = ? WHERE IdAcc = ?', [bg_url, user_id])
+                    .then(rows => {
+                        conn.release();
+                        if (rows[0].affectedRows > 0 || rows[0].changedRows > 0)
+                            return resolve(rows);
+                        else
+                            return reject();
+                    });
+            });
+        });
+    }
+	
+	//cambiar photo
+    updatePhotoUrlByIdAcc(photo_url, user_id) {
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            self.connection.getConnection().then(conn => {
+                conn.query('UPDATE users SET photo_url = ? WHERE IdAcc = ?', [photo_url, user_id])
+                    .then(rows => {
+                        conn.release();
+                        if (rows[0].affectedRows > 0 || rows[0].changedRows > 0)
+                            return resolve(rows);
+                        else
+                            return reject();
+                    });
+            });
+        });
+    }
 
     changeName(nname, account) {
         nname = nname.replace('%', '');
@@ -394,7 +427,7 @@ module.exports = class DataBase {
             self.dontExitsUserByGameId(nname)
                 .then(function () {
                     var discount = 0;
-                    if (account.player.name_changes > 0)
+                    if (account.player.name_changes >= 0)
                         discount = 4000;
                     if (account.player.cash < discount) {
                         data.error_cash = true;
@@ -544,6 +577,23 @@ module.exports = class DataBase {
         return new Promise(function (resolve, reject) {
             self.connection.getConnection().then(conn => {
                 conn.query('DELETE FROM guild_member WHERE Id = ? and UserId = ?', [guild_id, user_id])
+                    .then(rows => {
+                        conn.release();
+                        if (rows[0].affectedRows > 0 || rows[0].changedRows > 0)
+                            return resolve(rows);
+                        else
+                            return reject();
+                    });
+            });
+        });
+    }
+
+    
+    deleteGuild(guild_id) {
+        var self = this;
+        return new Promise(function (resolve, reject) {
+            self.connection.getConnection().then(conn => {
+                conn.query('DELETE FROM guild WHERE Id = ?', [guild_id])
                     .then(rows => {
                         conn.release();
                         if (rows[0].affectedRows > 0 || rows[0].changedRows > 0)
@@ -986,7 +1036,7 @@ module.exports = class DataBase {
         var self = this;
         return new Promise(function (resolve, reject) {
             self.connection.getConnection().then(conn => {
-                conn.query('UPDATE users SET rank = CASE WHEN rank=26 THEN 26 WHEN rank=27 THEN 27 WHEN gp>=120000 THEN 24 WHEN gp>=110000 THEN 23 WHEN gp>=100000 THEN 22 WHEN gp >=90000 THEN 21 WHEN gp>=80000 THEN 20 WHEN gp>=70000 THEN 19 WHEN gp>=60000 THEN 18 WHEN gp>=50000 THEN 17 WHEN gp>=40000 THEN 16 WHEN gp>=30000 THEN 15 WHEN gp>=22933 THEN 14 WHEN gp>=15001 THEN 13 WHEN gp>=10042 THEN 12 WHEN gp>=6900 THEN 11 WHEN gp>=6000 THEN 10 WHEN gp>=5100 THEN 9 WHEN gp>=4200 THEN 8 WHEN gp>=3500 THEN 7 WHEN gp>=2800 THEN 6 WHEN gp>=2300 THEN 5 WHEN gp>=1800 THEN 4 WHEN gp>=1500 THEN 3 WHEN gp>=1200 THEN 2 WHEN gp>=1100 THEN 1 WHEN gp<=1099 THEN 0 END')
+                conn.query('UPDATE users SET rank = CASE WHEN rank=26 THEN 26 WHEN rank=27 THEN 27 WHEN rank=28 THEN 28 WHEN rank=29 THEN 29 WHEN rank=30 THEN 30 WHEN rank=31 THEN 31 WHEN gp>=120000 THEN 24 WHEN gp>=110000 THEN 23 WHEN gp>=100000 THEN 22 WHEN gp >=90000 THEN 21 WHEN gp>=80000 THEN 20 WHEN gp>=70000 THEN 19 WHEN gp>=60000 THEN 18 WHEN gp>=50000 THEN 17 WHEN gp>=40000 THEN 16 WHEN gp>=30000 THEN 15 WHEN gp>=22933 THEN 14 WHEN gp>=15001 THEN 13 WHEN gp>=10042 THEN 12 WHEN gp>=6900 THEN 11 WHEN gp>=6000 THEN 10 WHEN gp>=5100 THEN 9 WHEN gp>=4200 THEN 8 WHEN gp>=3500 THEN 7 WHEN gp>=2800 THEN 6 WHEN gp>=2300 THEN 5 WHEN gp>=1800 THEN 4 WHEN gp>=1500 THEN 3 WHEN gp>=1200 THEN 2 WHEN gp>=1100 THEN 1 WHEN gp<=1099 THEN 0 END')
                     .then(rows => {
                         conn.release();
                         if (rows[0].length > 0)

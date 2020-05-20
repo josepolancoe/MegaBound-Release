@@ -35,7 +35,7 @@ router.get('/rr', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
     var data = [];
     req.db.connection.getConnection().then(conn => {
-        conn.query('SELECT u.game_id, u.gp, u.rank, g.Name FROM users u LEFT JOIN guild_member m ON m.UserId = u.IdAcc LEFT JOIN guild g ON g.Id = m.Id ORDER BY u.gp DESC limit 0, 29')
+        conn.query('SELECT u.game_id, u.gp, u.rank, g.Name FROM users u LEFT JOIN guild_member m ON m.UserId = u.IdAcc LEFT JOIN guild g ON g.Id = m.Id ORDER BY u.gp DESC limit 0, 60')
             .then(rows => {
                 conn.release();
                 if (rows.length > 0) {
@@ -102,7 +102,7 @@ router.post('/g', function (req, res) {
 
 router.post('/ajaxLogin', function (req, res) {
     res.setHeader('Content-Type', 'application/json');
-    req.db.setUpdateRank();
+    //req.db.setUpdateRank();
     var valid_enter = true;
     /*var valid_enter = false;*/
     /*if (req.headers.origin !== "null") {
@@ -139,24 +139,36 @@ router.post('/ajaxLogin', function (req, res) {
                         .then(function (rows2) {
                             if (rows2[0].length > 0) {
                                 var res1 = rows2[0][0];
-                                req.session.cookie.expires = false;
-                                //req.session.cookie.maxAge = new Date(Date.now() + (60 * 1000 * 10));
-                                req.session.cookie.maxAge = 600000;
-								req.session.account_id = data.Id;
-                                req.session.rank = res1.rank;
-                                req.session.acc_session = data.Session;
-                                req.session.game_id = res1.game_id;
-                                Logger.log("====================");
-                                Logger.log("User: " + res1.game_id);
-                                Logger.log("Rank: " + res1.rank);
-                                res.send(JSON.stringify([data.Id, res1.rank, 0, data.Session, country, 0]));
-                               var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-                               ip.replace(/^.*:/, '')
-                            //     getClientAddress = function (req) {
-                            //         return (req.headers['x-forwarded-for'] || '').split(',')[0].trim() || req.connection.remoteAddress;
-                            // };
-                            Logger.log("IP: "+ip);
-                            Logger.log("===================="+"\n");
+                                if (res1.unlock==1) {
+                                    req.session.cookie.expires = false;
+                                    req.session.cookie.maxAge = 600000;
+                                    req.session.account_id = data.Id;
+                                    req.session.rank = res1.rank;
+                                    req.session.acc_session = data.Session;
+                                    req.session.game_id = res1.game_id;
+                                    Logger.log("====================");
+                                    Logger.log("User: " + res1.game_id);
+                                    Logger.log("Rank: " + res1.rank);
+                                    Logger.log('ESTAS BANEADO');
+                                    req.session.destroy();
+                                    res.redirect('/');
+                                }else{
+                                    req.session.cookie.expires = false;
+                                    //req.session.cookie.maxAge = new Date(Date.now() + (60 * 1000 * 10));
+                                    req.session.cookie.maxAge = 600000;
+                                    req.session.account_id = data.Id;
+                                    req.session.rank = res1.rank;
+                                    req.session.acc_session = data.Session;
+                                    req.session.game_id = res1.game_id;
+                                    Logger.log("====================");
+                                    Logger.log("User: " + res1.game_id);
+                                    Logger.log("Rank: " + res1.rank);
+                                    res.send(JSON.stringify([data.Id, res1.rank, 0, data.Session, country, 0]));
+                                   var ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+                                  var ipv4= ip.replace(/^.*:/, '')
+                                Logger.log("IP: "+ipv4);
+                                Logger.log("===================="+"\n");
+                                }
                             } else {
                                 res.send(JSON.stringify([0]));
                             }
@@ -211,12 +223,13 @@ router.post('/ajaxRegister', function (req, res) {
         if (geo)
             country = geo.country;
     }
+	var MyDateRegister =(new Date()).toString().split(' ').splice(1,4).join(' ');
     var password = req.body.password;
     var gender = req.body.gender;
     var validate = false;
     if (Buffer.byteLength(gender, 'utf8') < 0 || (gender !== 'm' || gender !== 'f'))
         gender = 'm';
-    Logger.log("Se registró: '" + user + "' " + gender+"\n");
+    Logger.log("(Se registró: '" + user + "' " + gender+")\n");
     var tmpusrl = user;
     var tmpuser = tmpusrl.toLowerCase();
     if (Buffer.byteLength(user, 'utf8') < 2 || Buffer.byteLength(user, 'utf8') > 30) {
@@ -258,6 +271,7 @@ router.post('/ajaxRegister', function (req, res) {
                                     map_pack: 0,
                                     megaphones: 0,
                                     is_muted: 0,
+									MyDateRegister: MyDateRegister,
                                     IdAcc: uid
                                 };
                                 req.db.putUserFB(datos)
@@ -322,14 +336,16 @@ router.get('/w2', function (req, res) {
     // ["Avatar On.",7,9013,134,3000],["Avatar Off.",1,9014,749,3000],520
     // ];
     var data = [86, 0, 0, 
-        ["High Ranks",0,9001,45,3000,9,24],
-        ["Mid Ranks",0,9002,0,3000,7,17],
-        ["Beginners",0,9003,970,5000,0,6],
-        ["All",0,9004,0,3000],
-        ["All",0,9005,0,3000],
-        ["Bunge.",1,9006,0,3000],
-        ["Aduka.",1,9009,0,3000],
-        ["Dragon OFF",2,9012,0,4000,11,24,1586995,1587002]
+        
+        // ["High Ranks",0,9001,45,3000,9,24],
+        // ["Mid Ranks",0,9002,0,3000,7,17],
+        // ["Beginners",0,9003,970,5000,0,6],
+         ["All",0,9004,0,3000],
+        // ["All",0,9005,0,3000],
+        // ["Bunge.",1,9006,0,3000],
+        // ["Aduka.",1,9009,0,3000],
+        // ["Dragon OFF",2,9012,0,4000,11,24,1586995,1587002]
+        ["Only GM",0,90012,0,3000,26,27]
         ,520
     ];
     req.session.touch();

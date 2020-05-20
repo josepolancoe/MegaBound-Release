@@ -11,8 +11,8 @@ module.exports = class Game {
         this.id = id;
         this.room = room;
         this.gameserver = gameserver;
-        this.wind_power = 12;
-        this.wind_angle = 60;
+        this.wind_power = 0; //50
+        this.wind_angle = 0; //20
         this.frist_turn = 0;
         this.time_played = 0;
         this.turn_player = 0;
@@ -56,7 +56,9 @@ module.exports = class Game {
                         });
                     }
                 });
-            } catch (e) {
+            } catch (e) {                
+                Logger.info('entró al catch - Next Turn');   
+                self.checkDead();
                 self.getNextTurn(function (player) {
                     self.turn_player = player.position;
                     self.gameserver.pushToRoom(self.room.id, new Message.gamePlay(acc, shoot, player, chat));
@@ -126,19 +128,21 @@ module.exports = class Game {
 
     gameShoot(x, y, body, look, ang, power, time, type, account) {
         var self = this;
-        //Logger.debug("x: " + x + " y: " + y + " body: " + body + " look: " + look + " ang: " + ang + " power: " + power);
-        power = parseInt(power * 234 / 100);
+        var wind_power = 35; //50
+        var wind_angle = 20; //20
+        //Logger.info("x: " + x + " y: " + y + " body: " + body + " look: " + look + " ang: " + ang + " power: " + power);
+        power = parseInt(power * 235/ 100);
         var mobile_data = Types.MOBILES[account.player.mobile];
-        /*
-        var b0 = Math.round(parseInt(Math.cos(self.wind_ang * Math.PI / 180) * self.wind_power * mobile_data.by)) / 100;
-        var b1 = Math.round(parseInt(Math.sin(self.wind_ang * Math.PI / 180) * self.wind_power * mobile_data.by - mobile_data.bx)) / 100;
+        
+        var b0 = Math.round(parseInt(Math.cos(wind_angle * Math.PI / 180) * wind_power * mobile_data.by)) / 100;
+        var b1 = Math.round(parseInt(Math.sin(wind_angle * Math.PI / 180) * wind_power * mobile_data.by - mobile_data.bx)) / 100;
         var ax = Math.round(mobile_data.bx - b0);
         var ay = Math.round(mobile_data.by - b1);
-        if (self.wind_power == 0)
-        fay = mobile_data.by;
-        */
-        var ax = mobile_data.bx;
-        var ay = mobile_data.by;
+        // if (self.wind_power == 0)
+        // fay = mobile_data.by;
+        
+        // var ax = mobile_data.bx;
+        // var ay = mobile_data.by;
         var dis = 0;
         if (look === 0) {
             ang = 180 - ang;
@@ -257,6 +261,148 @@ module.exports = class Game {
             this.world.shoots_count = 4;
         } else {
             this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 1;
+        }
+        this.world.run();
+    }
+
+    gameShootDual(x, y, body, look, ang, power, time, type, account) {
+        var self = this;
+        var wind_power = 35; //50
+        var wind_angle = 20; //20
+        //Logger.info("x: " + x + " y: " + y + " body: " + body + " look: " + look + " ang: " + ang + " power: " + power);
+        power = parseInt(power * 235/ 100);
+        var mobile_data = Types.MOBILES[account.player.mobile];
+        
+        var b0 = Math.round(parseInt(Math.cos(wind_angle * Math.PI / 180) * wind_power * mobile_data.by)) / 100;
+        var b1 = Math.round(parseInt(Math.sin(wind_angle * Math.PI / 180) * wind_power * mobile_data.by - mobile_data.bx)) / 100;
+        var ax = Math.round(mobile_data.bx - b0);
+        var ay = Math.round(mobile_data.by - b1);
+        // if (self.wind_power == 0)
+        // fay = mobile_data.by;
+        
+        // var ax = mobile_data.bx;
+        // var ay = mobile_data.by;
+        var dis = 0;
+        if (look === 0) {
+            ang = 180 - ang;
+            dis = -11;
+        } else {
+            dis = 11;
+        }
+        ang -= body;
+        var point = {
+            x: x + dis,
+            y: y - 28
+        };
+        var pfinal = self.rotatePoint(point, {
+            x: x,
+            y: y
+        }, body);
+
+        //Logger.debug("x: " + rx + " y: " + ry + " body: " + body + " look: " + _mlook + " ang: " + ang + " power: " + power);
+
+        if (type === 0) {
+            account.player.addDelay(100);
+        } else if (type == 1) {
+            account.player.addDelay(150);
+        } else if (type == 2) {
+            account.player.addDelay(250);
+        }
+        if (Types.MOBILE.ADUKA === account.player.mobile && type === 1) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang - 2, power - 8, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang + 3, power + 8, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[3] = new Shoot(pfinal.x, pfinal.y, ang - 4, power - 8, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 4;
+        } else if (Types.MOBILE.BIGFOOT === account.player.mobile) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang - 2, power - 8, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang + 4, power + 8, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[3] = new Shoot(pfinal.x, pfinal.y, ang - 6, power - 8, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 4;
+        } else if (Types.MOBILE.DRAGON === account.player.mobile && type === 1) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang - 4, power - 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang - 8, power - 15, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 3;
+        } else if (Types.MOBILE.DRAGON === account.player.mobile && type === 0) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang - 4, power - 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang - 8, power - 15, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 3;
+        } else if (Types.MOBILE.DRAGON === account.player.mobile && type === 2) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang - 4, power - 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang + 8, power - 15, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[3] = new Shoot(pfinal.x, pfinal.y, ang - 12, power - 20, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[4] = new Shoot(pfinal.x, pfinal.y, ang + 16, power - 25, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 5;
+        } else if (Types.MOBILE.TRICO === account.player.mobile && type === 1) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang + 2, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang + 4, power + 15, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 3;
+        } else if (Types.MOBILE.TURTLE === account.player.mobile && type === 1) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang + 2, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 2;
+        } else if (Types.MOBILE.BOOMER === account.player.mobile && type === 1) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang, power + 10, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 3;
+        } else if (Types.MOBILE.ELECTRICO === account.player.mobile && type === 1) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang + 2, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang + 4, power + 10, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 3;
+        } else if (Types.MOBILE.GRUB === account.player.mobile && type === 1) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang + 2, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang + 4, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[3] = new Shoot(pfinal.x, pfinal.y, ang + 6, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 4;
+        } else if (Types.MOBILE.RAON === account.player.mobile && type === 0) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang + 2, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang + 4, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[3] = new Shoot(pfinal.x, pfinal.y, ang + 6, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[4] = new Shoot(pfinal.x, pfinal.y, ang + 8, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[5] = new Shoot(pfinal.x, pfinal.y, ang + 10, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[6] = new Shoot(pfinal.x, pfinal.y, ang + 12, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[7] = new Shoot(pfinal.x, pfinal.y, ang + 14, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 8;
+        } else if (Types.MOBILE.RAON === account.player.mobile && type === 1) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang + 2, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang + 4, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[3] = new Shoot(pfinal.x, pfinal.y, ang + 6, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[4] = new Shoot(pfinal.x, pfinal.y, ang + 8, power + 5, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 5;
+        } else if (Types.MOBILE.KALSIDDON === account.player.mobile) {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[1] = new Shoot(pfinal.x, pfinal.y, ang + 4, power + 10, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[2] = new Shoot(pfinal.x, pfinal.y, ang - 2, power - 10, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoots[3] = new Shoot(pfinal.x, pfinal.y, ang + 6, power + 20, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
+            this.world.shoots_count = 4;
+        } else {
+            this.world.shoots[0] = new Shoot(pfinal.x, pfinal.y, ang, power, type, ax, ay, this.wind_angle, this.wind_power, account);
+            this.world.shoot();
             this.world.shoot();
             this.world.shoots_count = 1;
         }

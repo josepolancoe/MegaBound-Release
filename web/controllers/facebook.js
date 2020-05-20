@@ -113,6 +113,7 @@ router.post('/', function (req, res) {
                                         map_pack: 0,
                                         megaphones: 0,
                                         is_muted: 0,
+										MyDateRegister: MyDateRegister,
                                         IdAcc: uid
                                     };
                                     req.db.putUserFB(datos)

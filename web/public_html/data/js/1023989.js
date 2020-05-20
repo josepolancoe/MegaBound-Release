@@ -13476,7 +13476,7 @@ var io = "undefined" == typeof module ? {} : module.exports;
             DRAG: 19,
             KALSIDDON: 20
         },
-        SELECTABLE_MOBILES = [MOBILE.ARMOR, MOBILE.ICE, MOBILE.ADUKA, MOBILE.LIGHTNING, MOBILE.BIGFOOT, MOBILE.JD, MOBILE.ASATE, MOBILE.RANDOM, MOBILE.KNIGHT, MOBILE.FOX, MOBILE.DRAGON, MOBILE.NAK, MOBILE.TRICO, MOBILE.MAGE, MOBILE.TURTLE, MOBILE.BOOMER, MOBILE.GRUB, MOBILE.RAON,MOBILE.KALSIDDON];
+        SELECTABLE_MOBILES = [MOBILE.ARMOR, MOBILE.ICE, MOBILE.ADUKA, MOBILE.LIGHTNING, MOBILE.BIGFOOT, MOBILE.JD, MOBILE.ASATE, MOBILE.RANDOM, MOBILE.FOX,  MOBILE.NAK, MOBILE.TRICO, MOBILE.MAGE, MOBILE.TURTLE, MOBILE.BOOMER, MOBILE.GRUB, MOBILE.RAON,MOBILE.KALSIDDON];
 
     function GetMobileAfter(a) {
         return SELECTABLE_MOBILES[(SELECTABLE_MOBILES.indexOf(a) + 1) % SELECTABLE_MOBILES.length]
@@ -21509,7 +21509,8 @@ var io = "undefined" == typeof module ? {} : module.exports;
                         crossDomain: !0
                     }).error(function(a) {
                         $("#LoginSubmit").removeClass("grayspin");
-                        alertify.error("Network Error. Try Again.")
+                        // alertify.error("Network Error. Try Again.")
+                        alertify.error("Fuiste Baneado.")
                     })) : alertify.alert(l.t("Please fill password.")) :
                     alertify.alert(l.t("Please fill Email / UserID / Username."))
             }
@@ -22492,7 +22493,7 @@ var io = "undefined" == typeof module ? {} : module.exports;
                     c.length; e++) {
                     var f = c[e],
                         h = !1;
-                    3 == f.length && f[2] == CHAT_TYPE_GM_BUGLE && "" == f[0] && "" == f[1] && (h = !0, f[0] = g_is_facebook_canvas ? 'MegaBound - <a href="https://www.facebook.com/josepolancoe" target="_blank">' + l.t("Facebook Page") + '</a> | <a href="//#" target="_blank">' + l.t("Facebook Group") + "</a> " : 'MegaBound - <a href="https://www.facebook.com/josepolancoe" target="_blank">' + l.t("News") + '</a> | <a href="#" target="_blank">' + l.t("Forums") + '</a> | <a href="https://www.facebook.com/josepolancoe" target="_blank">' +
+                    3 == f.length && f[2] == CHAT_TYPE_GM_BUGLE && "" == f[0] && "" == f[1] && (h = !0, f[0] = g_is_facebook_canvas ? 'MegaBound - <a href="https://www.facebook.com/groups/595863954358801/" target="_blank">' + l.t("Facebook Page") + '</a> | <a href="//#" target="_blank">' + l.t("Facebook Group") + "</a> " : 'MegaBound - <a href="https://www.facebook.com/josepolancoe" target="_blank">' + l.t("News") + '</a> | <a href="#" target="_blank">' + l.t("Forums") + '</a> | <a href="https://cutt.ly/grupo-mega-bound" target="_blank">' +
                         l.t("Facebook Group") + '</a> | <a href="https://www.youtube.com/channel/UCsz-zjxkcGyfUoaKqZaM_IQ?view_as=subscriber" target="_blank">' + l.t("YouTube") + "</a>");
                     ChatReceived(f[0], f[1], f[2], f[3], GUI_LOCATION_CHANNEL, d, h)
                 }

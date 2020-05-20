@@ -45,35 +45,48 @@ module.exports = class Commands {
                         }
                         break;
                     }
-                case '/on8':
+                case '/on4':
                     {
                         if (self.account.player.gm === 1 && typeof (self.account.room) !== 'undefined') {
                             self.account.room.max_players = 8;
                             self.account.room.power = 1;
+                            self.account.gameserver.sendRooms();
                         }
                         break;
                     }
-                case '/on4':
+                    case '/on3':
+                    {
+                        if (self.account.player.gm === 1 && typeof (self.account.room) !== 'undefined') {
+                            self.account.room.max_players = 6;
+                            self.account.room.power = 1;
+                            self.account.gameserver.sendRooms();
+                        }
+                        break;
+                    }
+                case '/on2':
                     {
                         if (self.account.player.gm === 1 && typeof (self.account.room) !== 'undefined') {
                             self.account.room.max_players = 4;
                             self.account.room.power = 1;
+                            self.account.gameserver.sendRooms();
                         }
                         break;
                     }
-				case '/on2':
+				case '/on1':
                     {
                         if (self.account.player.gm === 1 && typeof (self.account.room) !== 'undefined') {
                             self.account.room.max_players = 2;
                             self.account.room.power = 1;
+                            self.account.gameserver.sendRooms();
                         }
                         break;
                     }
-                    case '/on1':
+                        case '/on':
                         {
                             if (self.account.player.gm === 1 && typeof (self.account.room) !== 'undefined') {
-                                self.account.room.max_players = 1;
+                                self.account.room.max_players = 0;
                                 self.account.room.power = 1;
+                                self.account.gameserver.sendRooms();
                             }
                             break;
                         }
@@ -98,7 +111,6 @@ module.exports = class Commands {
                                 });
                             }
                             break;
-
                         }
                         case '/offmute':
                         {
@@ -111,9 +123,7 @@ module.exports = class Commands {
                                         });
                                 });
                             }
-                            break;
-
-                            
+                            break;  
                         }
                     case '/cash':
                         {
@@ -141,12 +151,49 @@ module.exports = class Commands {
                                 }
                                 break;
                             }
-                            case '/gp':
+						case '/upgame':
+                            {
+                                if (data[1] !== null && data[1].length > 0) {
+                                    cash1.db.connection.getConnection().then(conn => {
+                                        conn.query("UPDATE users SET win = (win + '"+ data[2] +"') WHERE game_id='"+ data[1] +"'",function(err, result){
+                                        }).then(rows => {
+                                                conn.release();                                       
+                                            });
+                                    });
+                                }
+                                break;
+                            }
+						case '/downgame':
+                            {
+                                if (data[1] !== null && data[1].length > 0) {
+                                    cash1.db.connection.getConnection().then(conn => {
+                                        conn.query("UPDATE users SET loss = (loss + '"+ data[2] +"') WHERE game_id='"+ data[1] +"'",function(err, result){
+                                        }).then(rows => {
+                                                conn.release();                                       
+                                            });
+                                    });
+                                }
+                                break;
+                            }
+                            case '/upgp':
                                 {
                                     if (data[1] !== null && data[1].length > 0) {
                                         cash1.db.connection.getConnection().then(conn => {
                                             conn.query("UPDATE users SET gp = (gp + '"+ data[2] +"') WHERE game_id='"+ data[1] +"'",function(err, result){
-                                                self.gameserver.pushBroadcast(new Message.chatResponse(self.account, " '"+data[1]+"' GANÓ '"+ data[2]+"' DE GP ", Types.CHAT_TYPE.SYSTEM));
+                                                self.gameserver.pushBroadcast(new Message.chatResponse(self.account, " '"+data[1]+"' Ganó '"+ data[2]+"' de GP ", Types.CHAT_TYPE.SYSTEM));
+                                            }).then(rows => {
+                                                    conn.release();                                       
+                                                });
+                                        });
+                                    }
+                                    break;
+                                }
+                                case '/downgp':
+                                {
+                                    if (data[1] !== null && data[1].length > 0) {
+                                        cash1.db.connection.getConnection().then(conn => {
+                                            conn.query("UPDATE users SET gp = (gp - '"+ data[2] +"') WHERE game_id='"+ data[1] +"'",function(err, result){
+                                                self.gameserver.pushBroadcast(new Message.chatResponse(self.account, " '"+data[1]+"' Perdió '"+ data[2]+"' de GP ", Types.CHAT_TYPE.SYSTEM));
                                             }).then(rows => {
                                                     conn.release();                                       
                                                 });
@@ -160,6 +207,18 @@ module.exports = class Commands {
                                             cash1.db.connection.getConnection().then(conn => {
                                                 conn.query("UPDATE users SET rank = ('"+ data[2] +"') WHERE game_id='"+ data[1] +"'",function(err, result){
                                                     self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El nivel de '"+data[1]+"' fue cambiado", Types.CHAT_TYPE.SYSTEM));
+                                                }).then(rows => {
+                                                        conn.release();                                       
+                                                    });
+                                            });
+                                        }
+                                        break;
+                                    }
+								case '/photo':
+                                    {
+                                        if (data[1] !== null && data[1].length > 0) {
+                                            cash1.db.connection.getConnection().then(conn => {
+                                                conn.query("UPDATE users SET photo_url = ('"+ data[2] +"') WHERE game_id='"+ data[1] +"'",function(err, result){
                                                 }).then(rows => {
                                                         conn.release();                                       
                                                     });
@@ -193,103 +252,12 @@ module.exports = class Commands {
                                         }
                                         break;
                                     }
-                                    case '/head':
-                                        {
-                                            if (data[1] !== null && data[1].length > 0) {
-                                                cash1.db.connection.getConnection().then(conn => {
-                                                    conn.query(" INSERT INTO user_avatars (Id, UserId, aId, type, expire, is_cash, is_gift, amount, expire_time) VALUES ('',' "+ data[1] +" ',' "+ data[2] +" ',0,'',1,'','','') ",function(err, result){
-                                                        self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El GM envió tú regalo (Head)", Types.CHAT_TYPE.SYSTEM));
-                                                    }).then(rows => {
-                                                            conn.release();                                       
-                                                        });
-                                                });
-                                            }
-                                            break;
-                                        }
-                                        case '/body':
-                                            {
-                                                if (data[1] !== null && data[1].length > 0) {
-                                                    cash1.db.connection.getConnection().then(conn => {
-                                                        conn.query(" INSERT INTO user_avatars (Id, UserId, aId, type, expire, is_cash, is_gift, amount, expire_time) VALUES ('',' "+ data[1] +" ',' "+ data[2] +" ',1,'',1,'','','') ",function(err, result){
-                                                            self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El GM envió tú regalo (Body)", Types.CHAT_TYPE.SYSTEM));
-                                                        }).then(rows => {
-                                                                conn.release();                                       
-                                                            });
-                                                    });
-                                                }
-                                                break;
-                                            }
-                                            case '/glass':
-                                                {
-                                                    if (data[1] !== null && data[1].length > 0) {
-                                                        cash1.db.connection.getConnection().then(conn => {
-                                                            conn.query(" INSERT INTO user_avatars (Id, UserId, aId, type, expire, is_cash, is_gift, amount, expire_time) VALUES ('',' "+ data[1] +" ',' "+ data[2] +" ',2,'',1,'','','') ",function(err, result){
-                                                                self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El GM envió tú regalo (Glass)", Types.CHAT_TYPE.SYSTEM));
-                                                            }).then(rows => {
-                                                                    conn.release();                                       
-                                                                });
-                                                        });
-                                                    }
-                                                    break;
-                                                }
-                                                case '/flag':
-                                                    {
-                                                        if (data[1] !== null && data[1].length > 0) {
-                                                            cash1.db.connection.getConnection().then(conn => {
-                                                                conn.query(" INSERT INTO user_avatars (Id, UserId, aId, type, expire, is_cash, is_gift, amount, expire_time) VALUES ('',' "+ data[1] +" ',' "+ data[2] +" ',3,'',1,'','','') ",function(err, result){
-                                                                    self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El GM envió tú regalo (Flag)", Types.CHAT_TYPE.SYSTEM));
-                                                                }).then(rows => {
-                                                                        conn.release();                                       
-                                                                    });
-                                                            });
-                                                        }
-                                                        break;
-                                                    }
-                                    case '/background':
-                                        {
-                                            if (data[1] !== null && data[1].length > 0) {
-                                                cash1.db.connection.getConnection().then(conn => {
-                                                    conn.query(" INSERT INTO user_avatars (Id, UserId, aId, type, expire, is_cash, is_gift, amount, expire_time) VALUES ('',' "+ data[1] +" ',' "+ data[2] +" ',4,'',1,'','','') ",function(err, result){
-                                                        self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El GM envió tú regalo (Background)", Types.CHAT_TYPE.SYSTEM));
-                                                    }).then(rows => {
-                                                            conn.release();                                       
-                                                        });
-                                                });
-                                            }
-                                            break;
-                                        }
-                                        case '/foreground':
-                                            {
-                                                if (data[1] !== null && data[1].length > 0) {
-                                                    cash1.db.connection.getConnection().then(conn => {
-                                                        conn.query(" INSERT INTO user_avatars (Id, UserId, aId, type, expire, is_cash, is_gift, amount, expire_time) VALUES ('',' "+ data[1] +" ',' "+ data[2] +" ',5,'',1,'','','') ",function(err, result){
-                                                            self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El GM envió tú regalo (Foreground)", Types.CHAT_TYPE.SYSTEM));
-                                                        }).then(rows => {
-                                                                conn.release();                                       
-                                                            });
-                                                    });
-                                                }
-                                                break;
-                                            }
-										case '/delete':
-                                            {
-                                                if (data[1] !== null && data[1].length > 0) {
-                                                    cash1.db.connection.getConnection().then(conn => {
-                                                        conn.query(" INSERT INTO user_avatars (Id, UserId, aId, type, expire, is_cash, is_gift, amount, expire_time) VALUES ('',' "+ data[1] +" ',' "+ data[2] +" ',5,'',1,'','','') ",function(err, result){
-                                                            self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El GM envió tú regalo (Foreground)", Types.CHAT_TYPE.SYSTEM));
-                                                        }).then(rows => {
-                                                                conn.release();                                       
-                                                            });
-                                                    });
-                                                }
-                                                break;
-                                            }
-								case '/kickgm':
+								case '/vip':
                                     {
                                         if (data[1] !== null && data[1].length > 0) {
                                             cash1.db.connection.getConnection().then(conn => {
-                                                conn.query("UPDATE users SET rank = 0, gm = 0 WHERE game_id='"+ data[1] +"'",function(err, result){
-                                                    self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "'"+data[1]+"' fue degradado de GM", Types.CHAT_TYPE.SYSTEM));
+                                                conn.query("UPDATE users SET rank = 31 WHERE game_id='"+ data[1] +"'",function(err, result){
+                                                    self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "'"+data[1]+"' se convirtió en VIP", Types.CHAT_TYPE.SYSTEM));
                                                 }).then(rows => {
                                                         conn.release();                                       
                                                     });
@@ -297,12 +265,25 @@ module.exports = class Commands {
                                         }
                                         break;
                                     }
-								case '/mod':
+                                    case '/gift':
+                                        {
+                                            if (data[1] !== null && data[1].length > 0) {
+                                                cash1.db.connection.getConnection().then(conn => {
+                                                    conn.query(" INSERT INTO user_avatars (Id, UserId, aId, type, expire, is_cash, is_gift, amount, expire_time) VALUES ('',' "+ data[1] +" ',' "+ data[2] +" ',0,'',1,'','','') ",function(err, result){
+                                                        self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El GM envió tú regalo", Types.CHAT_TYPE.SYSTEM));
+                                                    }).then(rows => {
+                                                            conn.release();                                       
+                                                        });
+                                                });
+                                            }
+                                            break;
+                                        }
+								case '/kickgm':
                                     {
                                         if (data[1] !== null && data[1].length > 0) {
                                             cash1.db.connection.getConnection().then(conn => {
-                                                conn.query("UPDATE users SET rank = 27, gm = 1 WHERE game_id='"+ data[1] +"'",function(err, result){
-                                                    self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "El nivel de '"+data[1]+"' fue cambiado", Types.CHAT_TYPE.SYSTEM));
+                                                conn.query("UPDATE users SET rank = 0, gm = 0 WHERE game_id='"+ data[1] +"'",function(err, result){
+                                                    self.gameserver.pushBroadcast(new Message.chatResponse(self.account, "'"+data[1]+"' fue degradado de GM", Types.CHAT_TYPE.SYSTEM));
                                                 }).then(rows => {
                                                         conn.release();                                       
                                                     });
@@ -324,21 +305,6 @@ module.exports = class Commands {
                                             }
                                             break;
                                         }
-
-                                        case '/send':
-                                            {
-                                                if (data[1] !== null && data[1].length > 0) {
-                                                    cash1.db.connection.getConnection().then(conn => {
-                                                        conn.query("SELECT IdAcc, game_id, gender, rank, gp, cash, gold, win, loss FROM users where game_id='"+ data[1] +"' ", function(err, result, fields){
-                                                            console.log(result);
-                                                            self.gameserver.pushBroadcast(new Message.chatResponse(self.account,  JSON.stringify(result) , Types.CHAT_TYPE.SYSTEM));
-                                                        }).then(rows => {
-                                                                conn.release();                                       
-                                                            });
-                                                    });
-                                                }
-                                                break;
-                                            }
                                     case '/time':
                                         {
                                             if (self.account.player.gm === 1) {
@@ -347,17 +313,32 @@ module.exports = class Commands {
                                             }
                                             break;
                                         }
-                                            case '/update_all':
-                                                {
-                                                        cash1.db.connection.getConnection().then(conn => {
-                                                            conn.query("UPDATE users SET rank = CASE WHEN rank=26 THEN 26 WHEN rank=27 THEN 27 WHEN gp>120000 THEN 24 WHEN gp>110000 THEN 23 WHEN gp>100000 THEN 22 WHEN gp > 90000 THEN 21 WHEN gp>80000 THEN 20 WHEN gp>70000 THEN 19 WHEN gp>60000 THEN 18 WHEN gp>50000 THEN 17 WHEN gp>40000 THEN 16 WHEN gp>30000 THEN 15 WHEN gp>22933 THEN 14 WHEN gp>15001 THEN 13 WHEN gp>10042 THEN 12 WHEN gp>6900 THEN 11 WHEN gp>6000 THEN 10 WHEN gp>5100 THEN 9 WHEN gp>4200 THEN 8 WHEN gp>3500 THEN 7 WHEN gp>2800 THEN 6 WHEN gp>2300 THEN 5 WHEN gp>1800 THEN 4 WHEN gp>1500 THEN 3 WHEN gp>1200 THEN 2 WHEN gp>1100 THEN 1 WHEN gp>=1000 THEN 0 END", function(err, result, fields){
-                                                                console.log(result);
-                                                                self.gameserver.pushBroadcast(new Message.chatResponse(self.account,  JSON.stringify(result) , Types.CHAT_TYPE.SYSTEM));
-                                                            }).then(rows => {
-                                                                    conn.release();                                       
-                                                                });
+                                    case '/ban':
+                                        {
+                                            if(data[1] !== null && data[1].length > 0){
+                                                cash1.db.connection.getConnection().then(conn => {
+                                                    conn.query("UPDATE `users` SET `unlock`=1 WHERE `game_id` ='"+data[1]+"' ",function(err, result){
+                                                        self.gameserver.pushBroadcast(new Message.chatResponse(self.account, " '"+data[1]+" fue baneado", Types.CHAT_TYPE.SYSTEM));
+                                                    }).then(rows => {
+                                                            conn.release();                                       
                                                         });
-                                                }
+                                                });
+                                            }
+                                            break;
+                                        }
+                                        case '/offban':
+                                        {
+                                            if(data[1] !== null && data[1].length > 0){
+                                                cash1.db.connection.getConnection().then(conn => {
+                                                    conn.query("UPDATE `users` SET `unlock`=0 WHERE `game_id` ='"+data[1]+"' ",function(err, result){
+                                                        self.gameserver.pushBroadcast(new Message.chatResponse(self.account, " '"+data[1]+" fue desbaneado", Types.CHAT_TYPE.SYSTEM));
+                                                    }).then(rows => {
+                                                            conn.release();                                       
+                                                        });
+                                                });
+                                            }
+                                            break;
+                                        }
             }
         } catch (e) {
             

@@ -30,7 +30,7 @@ module.exports = class World {
         this.gp_penalty = 0;
 
         if (gameserver.evento200 === true) {
-            this.gp_kill = (16 * 4);
+            this.gp_kill = (16 * 2);
             this.gold_kill = (1000 * 2);
 
             this.gold_good = (100 * 2);
@@ -41,7 +41,7 @@ module.exports = class World {
         }
 
         if (this.game.room.game_mode === Types.GAME_MODE.BOSS) {
-            this.gp_kill = (8*3);
+            this.gp_kill = (8*4);
             this.gold_kill = (500*2);
 
             this.gold_good = (100*2);

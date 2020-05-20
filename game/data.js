@@ -217,7 +217,7 @@ var db = [
             [36, 27, 8, 8], 11
         ],0
     ],
-    [812, 0, 2, 2, "ag03345", "GM Sign", {
+    [812, 0, 3, 2, "ag03345", "GM Sign", {
             "min_rank": 26,
             "note": 4,
             "gold_week": 0,
@@ -930,7 +930,7 @@ var db = [
             "gold_perm": 0,
             "cash_week": 0,
             "cash_month": 0,
-            "cash_perm": 0,
+            "cash_perm": 10000,
             "stat_pop": 0,
             "stat_time": 0,
             "stat_atk": 0,
@@ -978,7 +978,7 @@ var db = [
             "gold_perm": 0,
             "cash_week": 0,
             "cash_month": 0,
-            "cash_perm": 0,
+            "cash_perm": 10000,
             "stat_pop": 0,
             "stat_time": 0,
             "stat_atk": 0,
@@ -1002,7 +1002,7 @@ var db = [
             "gold_perm": 0,
             "cash_week": 0,
             "cash_month": 0,
-            "cash_perm": 0,
+            "cash_perm": 10000,
             "stat_pop": 0,
             "stat_time": 0,
             "stat_atk": 0,
@@ -1026,7 +1026,7 @@ var db = [
             "gold_perm": 0,
             "cash_week": 0,
             "cash_month": 0,
-            "cash_perm": 0,
+            "cash_perm": 10000,
             "stat_pop": 0,
             "stat_time": 0,
             "stat_atk": 0,
@@ -1050,7 +1050,7 @@ var db = [
             "gold_perm": 0,
             "cash_week": 0,
             "cash_month": 0,
-            "cash_perm": 0,
+            "cash_perm": 10000,
             "stat_pop": 0,
             "stat_time": 0,
             "stat_atk": 0,
@@ -1074,7 +1074,7 @@ var db = [
             "gold_perm": 0,
             "cash_week": 0,
             "cash_month": 0,
-            "cash_perm": 0,
+            "cash_perm": 10000,
             "stat_pop": 0,
             "stat_time": 0,
             "stat_atk": 0,
@@ -1122,7 +1122,7 @@ var db = [
             "gold_perm": 0,
             "cash_week": 0,
             "cash_month": 0,
-            "cash_perm": 0,
+            "cash_perm": 10000,
             "stat_pop": 0,
             "stat_time": 0,
             "stat_atk": 0,
@@ -1135,6 +1135,366 @@ var db = [
         },
         [
             [188,77,-6,-2]
+        ]
+    ],
+	[42828, 42828, 4, 2, "b203095", "(RARE) Pokemon", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 0,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [176,54,-6,-2],49
+        ]
+    ],
+	[42829, 42829, 3, 2, "af03098", "(RARE) Charmander", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 0,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [43,45,-27,21],31
+        ]
+    ],
+	[42830, 42830, 3, 2, "af03094", "(RARE) Pikachu", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [25,50,-30,27],3
+        ]
+    ],
+	[42831, 42831, 5, 2, "f204855", "(RARE) Pascua", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [188,34,0,-43],15
+        ]
+    ],
+	[42832, 42832, 3, 2, "af03251", "(RARE) Togepi", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [48,55,-28,24],[47,55,-28,24],[48,55,-28,24],[47,55,-28,24],[48,55,-28,24],[47,55,-28,24],[48,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24] ,[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24] ,[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[47,55,-28,24],[44,55,-28,24]
+        ]
+    ],
+	[42833, 42833, 4, 2, "b207209_yHREd", "(RARE) Prix Background", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 0,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [176,56,-6,0],11
+        ]
+    ],
+	[42834, 42834, 0, 2, "mh07053", "(RARE) Prix Head", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 30000,
+            "stat_pop": 20,
+            "stat_time": 20,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 20,
+            "remove_time": 0
+        },
+        [
+            [40,54,8,54],[34,54,10,54],[35,55,11,55],[36,54,12,55],[36,54,13,55],[37,55,14,56],5,[45,55,12,55],2,[45,56,12,56],[44,56,12,56],1,[43,56,12,56],1,[42,57,12,57],2
+        ]
+    ],
+	[42835, 42835, 1, 2, "mb07055", "(RARE) Prix Body", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 30000,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 30,
+            "stat_def": 30,
+            "stat_life": 30,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [26,28,10,6],10
+        ]
+    ],
+	[42836, 42836, 2, 2, "ag03492", "(RARE) Flying coins", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [112,114,50,64],[112,116,50,64],[112,116,50,64],[112,104,50,59],[112,106,50,58],[112,107,50,57],[112,116,50,64],[112,116,50,64],[112,116,50,64],[112,116,50,64],[112,116,50,64],[111,116,49,64],[111,116,49,64],[111,116,49,64],[113,116,51,64],[116,116,54,64],[116,111,54,59],[116,116,54,64],[116,116,54,64],[116,116,54,64],[116,116,54,64],[114,116,54,64]
+        ]
+    ],
+	[42837, 42837, 3, 2, "af04753", "(RARE) Trofeo Dragon", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 0,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [70,70,0,61],9
+        ]
+    ],
+	[42838, 42838, 2, 2, "ag04751", "(RARE) Cuchillos Flotantes", 
+		{
+            "min_rank": 12,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 0,
+            "stat_time": 10,
+            "stat_atk": 25,
+            "stat_def": 23,
+            "stat_life": 5,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 25,
+            "remove_time": 0
+        },
+        [
+            [120,120,30,80],23
+        ]
+    ],
+	[42839, 42839, 3, 2, "af04307", "(RARE) Legendary Lugia", 
+		{
+            "min_rank": 0,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 20,
+            "stat_time": 20,
+            "stat_atk": 20,
+            "stat_def": 20,
+            "stat_life": 20,
+            "stat_item": 20,
+            "stat_dig": 20,
+            "stat_shld": 20,
+            "remove_time": 0
+        },
+        [
+            [75,75,-5,55],19
+        ]
+    ],
+	[42840, 42840, 3, 2, "af04306", "(RARE) Legendary Ho-oh", 
+		{
+            "min_rank": 0,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 20,
+            "stat_time": 20,
+            "stat_atk": 20,
+            "stat_def": 20,
+            "stat_life": 20,
+            "stat_item": 20,
+            "stat_dig": 20,
+            "stat_shld": 20,
+            "remove_time": 0
+        },
+        [
+            [105,105,15,78],29
+        ]
+    ],
+	[42841, 42841, 0, 2, "mh07131", "(RARE) Napoleon", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 20,
+            "stat_time": 20,
+            "stat_atk": 20,
+            "stat_def": 20,
+            "stat_life": 20,
+            "stat_item": 20,
+            "stat_dig": 20,
+            "stat_shld": 20,
+            "remove_time": 0
+        },
+        [
+            [50,50,11,41],10,[50,50,11,42],10
+        ]
+    ],
+	[42842, 42842, 4, 2, "b204425", "(RARE) Wanted", 
+		{
+            "min_rank": 26,
+            "note": 4,
+            "gold_week": 0,
+            "gold_month": 0,
+            "gold_perm": 0,
+            "cash_week": 0,
+            "cash_month": 0,
+            "cash_perm": 10000,
+            "stat_pop": 0,
+            "stat_time": 0,
+            "stat_atk": 0,
+            "stat_def": 0,
+            "stat_life": 0,
+            "stat_item": 0,
+            "stat_dig": 0,
+            "stat_shld": 0,
+            "remove_time": 0
+        },
+        [
+            [187,56,0,0],19
         ]
     ],
     [20, 20, 0, 2, "mh00020", "OSO (RARE)",

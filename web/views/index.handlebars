@@ -20,8 +20,7 @@
     <link rel="stylesheet" href="/static/css/dragonbound.min.css?51" />
     <script src="/static/js/1023989.js?51"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
-    {{!-- <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' https://connect.facebook.com *.google-analytics.com https://pagead2.googlesyndication.com 'unsafe-inline' *.criteo.com *.criteo.net"> --}}
-            <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' https://connect.facebook.net https://connect.facebook.com https://twemoji.maxcdn.com *.google-analytics.com https://pagead2.googlesyndication.com 'unsafe-inline'">
+    <meta http-equiv="Content-Security-Policy" content="style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval' https://connect.facebook.net https://connect.facebook.com https://twemoji.maxcdn.com *.google-analytics.com https://pagead2.googlesyndication.com 'unsafe-inline'">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <link rel="apple-touch-icon" href="/static/images/icon.png">
@@ -295,10 +294,11 @@ Play MegaBound now, a Free Multiplayer Online HTML5 Game. Play with or meet new 
 <div id="ranking_data">
 <br>
 {{!-- <div id="cto_async" class="hide"></div> --}}
-{{!-- <div id="ad3"></div>
-<div id="ad2"></div> --}}
-{{!-- <div id="ad1"></div> --}}
-<div class="fb-page" data-href="https://www.facebook.com/AimbotT0yPRO" data-width="300" data-height="72" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"></div>
+{{!-- <div id="ad3"><img src="/static/images/anuncio01.png"></div>
+<div id="ad2"></div>
+<div id="ad1"><img src="static/images/anuncio01.png"></div>  --}}
+<div class="fb-page" data-href="https://www.facebook.com/AimbotT0yPRO" data-width="295" data-height="72" data-small-header="true" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true" data-show-posts="true"></div>
+<img src="/static/images/anuncio01.jpg" style="width:295px">
 <br><br><a id="toslink2" class="blackShadow" href="/static/termsofservice.txt" target="_blank">Terms of Service</a>
 </div>
 </div>
@@ -557,7 +557,8 @@ Play MegaBound now, a Free Multiplayer Online HTML5 Game. Play with or meet new 
                     <div class="AlertBoxTitle"></div>
                     <div class="AlertBoxContent blackShadow">
                         <label for="display_name" id="display_name_label"></label>
-                        <input type="text" value="" id="display_name" maxlength="15" /><br>
+                        <input type="text" value="" id="display_name" maxlength="15" />
+                        <input type="text" placeholder="url-photo" value="" id="display_photo" maxlength="70" /><br>
                         <div id="NameChangeLittle"></div>
                         <input type="checkbox" checked id="can_show_photo" />
                         <label for="can_show_photo" id="can_show_photo_label"></label>

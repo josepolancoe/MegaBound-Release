@@ -347,7 +347,7 @@ Messages.gameOver = Message.extend({
                 player.win_gp,
                 player.win_gold,
                 10, //bonus gp
-                0 //bonus gold
+                10 //bonus gold
             ]);
         });
     },
@@ -513,7 +513,7 @@ Messages.friendsResponse = Message.extend({
     serialize: function () {
         return [Types.SERVER_OPCODE.friends, [
             //aburren
-            [1, 0, "Polanco", "22813", "b26c2"],
+            [22832, 0, "Polanco", "22832", "b26c2"],
 			// [1, 0, "Dev", "12345", "b27c2"],
             //[2, 0, "Betax", "1234", "b27c2"],
             // [62, 0, "NOVA", "1235", "b26c2"],

@@ -20,13 +20,14 @@ router.get('/:guild_id', function(req, res) {
                 req.db.getUserGuild(guild_id)
                     .then(function (resb) {
                         var rows = resb[0];
-                        res.render('guild', {
+                        res.render('guild', {rows,
                             Name: rows[0].Name,
                             game_id1: rows[0].game_id,
                             //game_id2: rows[1].game_id,
                             rank1: rows[0].rank,
                             //rank2: rows[1].rank,
                             gp1:rows[0].gp,
+                            Job: rows[0].job,
                             //gp2:rows[1].gp,
                             id_guild: rows[0].id_guild
                         });
