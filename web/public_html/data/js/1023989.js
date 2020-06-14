@@ -18928,7 +18928,7 @@ var io = "undefined" == typeof module ? {} : module.exports;
         "Already Playing": ["Ya est\u00e1n jugando", "J\u00e1 est\u00e1 Jogando", "Naglalaro na"],
         "This player is already in the room.\n\nPlease select a different one.": ["Este jugador ya est\u00e1 en la sala.\n\nPor favor, seleccionar a otro diferente", "Este jogador j\u00e1 est\u00e1 na sala.\n\nPor favor selecione um diferente.", "Ang player na ito ay nasa kwarto na.\n\nMaaari lamang na pumili ng iba"],
         Event: ["Evento", "Evento"],
-        "You won the event!\nHere is a gift of <u>%% Cash</u> and <u>%% Gold": ["Ganaste el evento!\nAqu\u00ed est\u00e1 tu premio de <u>%% Cash</u> y <u>%% Gold",
+        "You won the event!\nHere is a gift of <u>%% Gold</u> and <u>%% Cash": ["Ganaste el evento!\nAqu\u00ed est\u00e1 tu premio de <u>%% Gold</u> y <u>%% Cash",
             "Voc\u00ea venceu o evento!\nAqui est\u00e1 o seu pr\u00eamio de <u>%% Cash</u> e <u>%% Gold", "Nanalo ka sa event!\nIto ang gantimpala na<u>%% Cash</u> at <u>%% Gold"
         ],
         "Come back in at least <u>4 hours</u>\nto get another gift.": ["Vuelve en por lo menos <u>4 horas</u>\npara obtener otro premio.", "Volte em pelo menos <u>4 horas</u>\n para receber outro pr\u00eamio.", "Bumalik sa hindi kukulang na <u> 4 hours</u>\n para makakuha ng panibagong regalo"],

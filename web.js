@@ -75,7 +75,8 @@ this._app.use(session({
     resave: true,
     saveUninitialized: true,
     cookie: {
-        secure: true,
+        //secure: true, (ON HTTPS)
+        secure: false,
         //maxAge: new Date(Date.now() + (60 * 1000 * 10))
 		maxAge: 600000
     }

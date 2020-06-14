@@ -793,11 +793,13 @@ module.exports = class DataBase {
                         }
                         self.updateEventLogByIdAcc(sctp, account.user_id)
                             .then(function (rows2) {
-                                var xgold = 1000;
-                                var xcash = 2000;
+                                //cash 4 horas
+                                var xgold = 5000;
+                                var xcash = 1000;
+                                //cash 24h
                                 if (type === 0) {} else if (type === 3) {
-                                    xgold = 1000;
-                                    xcash = 3500;
+                                    xgold = 7000;
+                                    xcash = 2000;
                                 }
                                 self.updateGoldCashEventByIdAcc(xgold, xcash, account.user_id)
                                     .then(function (rows3) {

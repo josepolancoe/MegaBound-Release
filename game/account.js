@@ -290,7 +290,6 @@ module.exports = class Account {
                                             } else {
                                                 self.sendMessage(new Message.loginResponse(self));
                                             }
-                                            //self.sendMessage(new Message.loginResponse(self));
                                             self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.PURCHASED, [id]));
                                             self.sendMessage(new Message.alertResponse("Aviso :(","Por favor salga y vuelva a entrar a la tienda para ver sus avatares nuevos \n \n \n - Disculpe las molestias, estamos trabajando-"));
                                         }
@@ -369,7 +368,10 @@ module.exports = class Account {
                         if (data.error_mysql || data.error_querry) {
 
                         } else if (data.complete) {
-                            self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.WON_EVENT2, [data.gold, data.cash]));
+                            self.player.cash = self.player.cash + data.cash;
+                            self.player.gold = self.player.gold + data.gold;
+                            self.sendMessage(new Message.loginResponse(self));
+                            self.sendMessage(new Message.alert2Response(Types.ALERT2_TYPES.WON_EVENT2, [data.cash, data.gold]));                            
                         }
                     });
                     break;

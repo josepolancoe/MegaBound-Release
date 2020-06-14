@@ -6,6 +6,7 @@ var ignoreCase = require('ignore-case');
 var md5 = require('md5');
 var geoip = require('geoip-lite');
 
+router.use('/g', require('./guild'));
 router.use('/guild', require('./guild'));
 router.use('/u', require('./user'));
 router.use('/user', require('./user'));
